@@ -12,7 +12,21 @@ class MyApp extends StatefulWidget{
 class _MyAppState extends State<MyApp>{
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   @override
-
+  void initState(){
+    super.initState();
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    var android = new  AndroidInitializationSettings('@mipmap/ic_launcher');
+    var IOS = new IOSInitializationSettings();
+    var initSettings = new InitializationSettings(android, IOS);
+    flutterLocalNotificationsPlugin.initialize(initSettings);
+  }
+  Future<void> initSettings(String payload){
+    debugPrint("payload: $payload");
+    showDialog(context: context, builder: (_)=> new AlertDialog(
+      title: Text('Notification'),
+      content: Text('Payload'),
+    ));
+  }
 
   Future<void> _showNotification() async{
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
