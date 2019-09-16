@@ -31,14 +31,12 @@ class _MyAppState extends State<MyApp>{
       appBar: new AppBar(
         title: Text(notifications.main_title),
       ),
-      body: RaisedButton(
+      body: IconButton(
+        icon: Icon(Icons.notifications),
         onPressed: () async{
-      await _showNotification();
-      },
-          child: Text(
-          'Demo',
+        await _showNotification();
+        },
           ),
-      ),
     );
   }
 }
