@@ -12,21 +12,7 @@ class MyApp extends StatefulWidget{
 class _MyAppState extends State<MyApp>{
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   @override
-  void initState(){
-    super.initState();
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var android = new  AndroidInitializationSettings('@mipmap/ic_launcher');
-    var IOS = new IOSInitializationSettings();
-    var initSettings = new InitializationSettings(android, IOS);
-    flutterLocalNotificationsPlugin.initialize(initSettings);
-  }
-  Future<void> initSettings(String payload){
-    debugPrint("payload: $payload");
-    showDialog(context: context, builder: (_)=> new AlertDialog(
-      title: Text('Notification'),
-      content: Text('Payload'),
-    ));
-  }
+
 
   Future<void> _showNotification() async{
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -35,7 +21,7 @@ class _MyAppState extends State<MyApp>{
     var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, IOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0, 'title', 'body', platformChannelSpecifics, payload:'item x');
+      0, notifications.heads_up, notifications.notification, platformChannelSpecifics, payload:'item x');
   }
 
 
@@ -54,12 +40,6 @@ class _MyAppState extends State<MyApp>{
           ),
       ),
     );
-  }
-  showNotification()async{
-    var android = AndroidNotificationDetails('channelId', 'channelName', 'channelDescription',importance: Importance.Max, priority: Priority.High, ongoing:true);
-    var IOS = IOSNotificationDetails();
-    var platform = new NotificationDetails(android, IOS);
-    await flutterLocalNotificationsPlugin.show(0, 'This is a notification', 'Flutter local notification', platform);
   }
 }
 
