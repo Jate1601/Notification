@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
             ));
   }
 
-  Future<void> _showNotification(String title, String payload_text) async {
+  Future<void> _showNotification(int ID, String title, String payload_text) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'channel_id', 'channel_name', 'description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, IOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, title, payload_text, platformChannelSpecifics,
+        ID, title, payload_text, platformChannelSpecifics,
         payload: 'item x');
   }
 
@@ -62,14 +62,16 @@ class _MyAppState extends State<MyApp> {
                   icon: Icon(Icons.notifications),
                   onPressed: () async {
                     //await _showNotification();
-                    await _showNotification("Icon Left", "You drank enough water");
+                    await _showNotification(notifications.counter,"Icon Left", "You drank enough water");
+                    notifications.counter += 1;
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.airport_shuttle),
                   onPressed: () async {
-                    await _showNotification(
-                        "Icon Right", "Time to drink your water");
+                    var temp = notifications.counter;
+                    await _showNotification(notifications.counter,"Icon Right", "Time to drink your : $temp");
+                    notifications.counter += 1;
                   },
                 )
               ],

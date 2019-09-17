@@ -4,4 +4,5 @@ class notifications{
   static String lokal = 'Local notification';
   static String notification = 'This should work?';
   static String heads_up = 'Heads-up noitfication';
+  static int counter = 0;
 }
