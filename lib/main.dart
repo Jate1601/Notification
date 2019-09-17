@@ -2,74 +2,80 @@ import 'package:flutter/rendering.dart';
 
 import 'notification.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';  // For heads-up notificaions
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // For heads-up notificaions
 
 void main() => runApp(new MaterialApp(home: new MyApp()));
 
-class MyApp extends StatefulWidget{
+class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp>{
+class _MyAppState extends State<MyApp> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  @override
 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var android = new  AndroidInitializationSettings('@mipmap/ic_launcher');
+    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
     var IOS = new IOSInitializationSettings();
     var initSettings = new InitializationSettings(android, IOS);
     flutterLocalNotificationsPlugin.initialize(initSettings);
   }
-  Future<void> initSettings(String payload){
+
+  Future<void> initSettings(String payload) {
     debugPrint("payload: $payload");
-    showDialog(context: context, builder: (_)=> new AlertDialog(
-      title: Text('Notification'),
-      content: Text('Payload'),
-    ));
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: Text('Notification'),
+              content: Text('Payload'),
+            ));
   }
 
-
-  Future<void> _showNotification() async{
+  Future<void> _showNotification(String title, String payload_text) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'channel_id', 'channel_name', 'description', importance: Importance.Max, priority: Priority.High  , ticker: 'ticker');
+        'channel_id', 'channel_name', 'description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var IOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, IOSPlatformChannelSpecifics);
+        androidPlatformChannelSpecifics, IOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0, notifications.heads_up, notifications.notification, platformChannelSpecifics, payload:'item x');
+        0, title, payload_text, platformChannelSpecifics,
+        payload: 'item x');
   }
-
 
   @override
   Widget build(BuildContext context) {
-    debugPaintSizeEnabled = true;
+    //debugPaintSizeEnabled = true;
     return Scaffold(
       appBar: new AppBar(
         title: Text(notifications.main_title),
       ),
-      body:Center(
-      child:Column(children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.notifications),
-          onPressed: () async{
-            await _showNotification();
-          },
-        ),
 
-        FloatingActionButton(
-          child: Icon(Icons.notifications),
-          onPressed: () async{
-            await _showNotification();
-          },
-        )
-
-      ],
-        ),
-      ),
+      bottomNavigationBar: BottomAppBar(
+          child: Container(
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () async {
+                    //await _showNotification();
+                    await _showNotification("Icon Left", "You drank enough water");
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.airport_shuttle),
+                  onPressed: () async {
+                    await _showNotification(
+                        "Icon Right", "Time to drink your water");
+                  },
+                )
+              ],
+            ),
+              color: Colors.blueAccent,
+      )),
     );
   }
 }
-
